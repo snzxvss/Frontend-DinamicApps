@@ -1,6 +1,6 @@
-# Frontend Project - Next.js
+# Frontend Project - React (Next.js)
 
-Este proyecto es una aplicación frontend desarrollada utilizando **Next.js**. El objetivo principal es implementar una interfaz moderna y funcional para la gestión de citas médicas.
+Este proyecto es una aplicación frontend desarrollada utilizando **React** con el framework **Next.js**. El objetivo principal es implementar una interfaz moderna y funcional para la gestión de citas médicas.
 
 ## Estructura del Proyecto
 
@@ -125,17 +125,17 @@ Para ejecutar el proyecto en un entorno de desarrollo, sigue estos pasos:
 
 1. Clona el repositorio:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/snzxvss/Frontend-DinamicApps.git
    ```
 
 2. Instala las dependencias:
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. Inicia el servidor de desarrollo:
    ```bash
-   pnpm run dev
+   npm run dev
    ```
 
 4. Abre tu navegador en `http://localhost:3000` para ver la aplicación.
@@ -146,12 +146,12 @@ Para desplegar el proyecto en un entorno de producción:
 
 1. Genera los archivos estáticos:
    ```bash
-   pnpm run build
+   npm run build
    ```
 
-2. Los archivos generados estarán en la carpeta `.next/`. Puedes servir esta carpeta utilizando cualquier servidor web estático, como Nginx o Apache.
+2. Los archivos generados estarán en la carpeta `.output/`. Puedes servir esta carpeta utilizando cualquier servidor web estático, como Nginx o Apache.
 
-3. Configura tu servidor para servir los archivos desde la carpeta `.next/`.
+3. Configura tu servidor para servir los archivos desde la carpeta `.output/`.
 
 ---
 
