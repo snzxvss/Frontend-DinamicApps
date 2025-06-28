@@ -66,17 +66,13 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
 
       console.log("Response received in AuthPage:", response)
 
-      if (response?.statusCode === 200) {
-        const patient: Patient | null = response?.content || null
+      const patient: Patient | null = response?.content || null
 
-        if (patient) {
-          console.log("Patient found:", patient)
-          onAuthSuccess(patient)
-        } else {
-          setError("No se encontró un paciente con los datos proporcionados.")
-        }
+      if (patient) {
+        console.log("Patient found:", patient)
+        onAuthSuccess(patient)
       } else {
-        setError(response?.message || "Error al verificar los datos. Intente nuevamente.")
+        setError("No se encontró un paciente con los datos proporcionados.")
       }
     } catch (err) {
       setError("Error al verificar los datos. Intente nuevamente.")
@@ -108,8 +104,6 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
   // Generate years from 1900 to current year
   const years = Array.from({ length: new Date().getFullYear() - 1900 + 1 }, (_, i) => 1900 + i).reverse()
 
-
-
   const formatDate = (date: Date, formatString: string): string => {
     const options: Intl.DateTimeFormatOptions = {}
 
@@ -128,75 +122,101 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
     onYearChange,
     onMonthChange,
   }: {
-    selectedDate: Date | null;
-    onDateSelect: (date: Date) => void;
-    selectedYear: number;
-    selectedMonth: number;
-    onYearChange: (year: number) => void;
-    onMonthChange: (month: number) => void;
+    selectedDate: Date | null
+    onDateSelect: (date: Date) => void
+    selectedYear: number
+    selectedMonth: number
+    onYearChange: (year: number) => void
+    onMonthChange: (month: number) => void
   }) => {
-    const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
     const months = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ]
 
-    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-    const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate()
+    const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay()
 
     const handleDayClick = (day: number) => {
-      const date = new Date(selectedYear, selectedMonth, day);
-      onDateSelect(date);
-    };
+      const date = new Date(selectedYear, selectedMonth, day)
+      onDateSelect(date)
+    }
 
     return (
-      <div className="custom-calendar bg-slate-800 text-white rounded-lg p-4">
-        <div className="flex justify-between items-center mb-4">
+      <div className="custom-calendar bg-slate-800 text-white rounded-lg p-2 w-64 max-w-[90vw]">
+        <div className="flex justify-between items-center mb-2 gap-2">
           <select
             value={selectedYear}
             onChange={(e) => onYearChange(Number(e.target.value))}
-            className="bg-slate-700 text-white rounded-md p-2"
+            className="bg-slate-700 text-white rounded-md p-1 text-xs flex-1 min-w-0"
           >
-            {Array.from({ length: new Date().getFullYear() - 1900 + 1 }, (_, i) => 1900 + i).reverse().map((year) => (
-              <option key={year} value={year}>{year}</option>
-            ))}
+            {Array.from({ length: new Date().getFullYear() - 1900 + 1 }, (_, i) => 1900 + i)
+              .reverse()
+              .map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
           </select>
 
           <select
             value={selectedMonth}
             onChange={(e) => onMonthChange(Number(e.target.value))}
-            className="bg-slate-700 text-white rounded-md p-2"
+            className="bg-slate-700 text-white rounded-md p-1 text-xs flex-1 min-w-0"
           >
             {months.map((month, index) => (
-              <option key={index} value={index}>{month}</option>
+              <option key={index} value={index}>
+                {month}
+              </option>
             ))}
           </select>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        <div className="grid grid-cols-7 gap-0.5 mb-1">
           {daysOfWeek.map((day) => (
-            <div key={day} className="text-center text-slate-400 text-sm">{day}</div>
+            <div key={day} className="text-center text-slate-400 text-xs py-1 font-medium">
+              {day}
+            </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5">
           {Array.from({ length: firstDayOfMonth }, (_, i) => (
-            <div key={`empty-${i}`} className="text-center text-slate-500">&nbsp;</div>
+            <div key={`empty-${i}`} className="text-center text-slate-500 h-7">
+              &nbsp;
+            </div>
           ))}
 
           {Array.from({ length: daysInMonth }, (_, i) => (
             <button
               key={i + 1}
               onClick={() => handleDayClick(i + 1)}
-              className={`text-center rounded-md p-2 ${selectedDate?.getDate() === i + 1 && selectedDate?.getMonth() === selectedMonth && selectedDate?.getFullYear() === selectedYear ? "bg-blue-600" : "hover:bg-slate-600"}`}
+              className={`text-center rounded-md h-7 w-full text-xs transition-colors ${
+                selectedDate?.getDate() === i + 1 &&
+                selectedDate?.getMonth() === selectedMonth &&
+                selectedDate?.getFullYear() === selectedYear
+                  ? "bg-blue-600 text-white"
+                  : "hover:bg-slate-600 text-slate-200"
+              }`}
             >
               {i + 1}
             </button>
           ))}
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   if (showLoadingScreen) {
     return (
@@ -287,9 +307,13 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
                       />
                     </PopoverTrigger>
                     <PopoverContent
-                      className="w-auto p-0 bg-slate-800 border-slate-600 rounded-lg"
+                      className="w-auto p-0 bg-slate-800 border-slate-600 rounded-lg shadow-xl"
                       align="start"
                       side="bottom"
+                      sideOffset={4}
+                      alignOffset={0}
+                      avoidCollisions={true}
+                      collisionPadding={8}
                     >
                       <CustomCalendar
                         selectedDate={selectedDate}
