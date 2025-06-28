@@ -130,20 +130,22 @@ export default function AppointmentsPage({ patient, specialty, onBack, onSuccess
 
     try {
       setIsBooking(true)
-      const success = await appointmentService.bookAppointment({
+      const response = await appointmentService.bookAppointment({
         citaId: selectedAppointment.id,
         pacienteId: userInfo.id || 0, // Fallback to 0 if id is undefined
       })
 
-      if (success) {
+      if (response?.statusCode === 200) {
         setShowConfirmModal(false)
         onSuccess()
       } else {
-        setError("Error al reservar la cita. Intente nuevamente.")
+        setError(response?.message || "Error al reservar la cita. Intente nuevamente.")
+        setShowConfirmModal(false)
       }
     } catch (err) {
       console.log("Error: ", err)
       setError("Error al reservar la cita. Intente nuevamente.")
+      setShowConfirmModal(false)
     } finally {
       setIsBooking(false)
     }
@@ -460,8 +462,6 @@ export default function AppointmentsPage({ patient, specialty, onBack, onSuccess
                   {canGoForward10 && (
                     <Button
                       variant="outline"
-                      onClick={goForward10Pages}
-                      disabled={isPaginationLoading}
                       className="bg-slate-800/50 border-slate-600 text-white hover:bg-slate-700 h-8 px-2 sm:h-10 sm:px-3"
                       title="Avanzar 10 páginas"
                     >

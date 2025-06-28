@@ -68,11 +68,11 @@ export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
 
       const patient: Patient | null = response?.content || null
 
-      if (patient) {
+      if (response?.statusCode === 200 && patient) {
         console.log("Patient found:", patient)
         onAuthSuccess(patient)
       } else {
-        setError("No se encontró un paciente con los datos proporcionados.")
+        setError(response?.message || "No se encontró un paciente con los datos proporcionados.")
       }
     } catch (err) {
       setError("Error al verificar los datos. Intente nuevamente.")
